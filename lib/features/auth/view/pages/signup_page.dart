@@ -1,0 +1,82 @@
+import 'package:flutter/material.dart';
+import 'package:music_app/core/theme/app_pallete.dart';
+import 'package:music_app/features/auth/view/widgets/auth_gradient_button.dart';
+import 'package:music_app/features/auth/view/widgets/custom_text_field.dart';
+
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
+
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Sign Up.",
+                style: TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 30.0),
+              CustomTextField(
+                placeholderText: "Name",
+                controller: nameController,
+              ),
+              const SizedBox(height: 15.0),
+              CustomTextField(
+                placeholderText: "Email",
+                controller: emailController,
+              ),
+              const SizedBox(height: 15.0),
+              CustomTextField(
+                placeholderText: "Password",
+                controller: passwordController,
+                isObscureText: true,
+              ),
+              const SizedBox(height: 20.0),
+              AuthGradientButton(),
+              const SizedBox(height: 20.0),
+              RichText(
+                text: TextSpan(
+                  text: "Already have an account? ",
+                  children: [
+                    TextSpan(
+                      text: "Sign In",
+                      style: TextStyle(
+                        color: Pallete.gradient2,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
