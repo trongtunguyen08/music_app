@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:music_app/core/theme/app_pallete.dart';
 
 class AuthGradientButton extends StatelessWidget {
-  const AuthGradientButton({super.key});
+  final String buttonText;
+  final VoidCallback? onButtonPressed;
+
+  const AuthGradientButton({
+    super.key,
+    required this.buttonText,
+    this.onButtonPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +30,9 @@ class AuthGradientButton extends StatelessWidget {
           overlayColor: Pallete.transparentColor,
           fixedSize: Size(double.infinity, 55),
         ),
-        onPressed: () {},
+        onPressed: onButtonPressed,
         child: Text(
-          "Sign Up",
+          buttonText,
           style: TextStyle(
             fontSize: 17.0,
             fontWeight: FontWeight.w600,

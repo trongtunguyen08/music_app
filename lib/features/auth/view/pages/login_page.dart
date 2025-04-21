@@ -3,22 +3,20 @@ import 'package:music_app/core/theme/app_pallete.dart';
 import 'package:music_app/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:music_app/features/auth/view/widgets/custom_text_field.dart';
 
-class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
-  final nameController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -29,22 +27,16 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Form(
-          key: formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "Sign Up.",
+                "Sign In.",
                 style: TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 30.0),
-              CustomTextField(
-                placeholderText: "Name",
-                controller: nameController,
-              ),
-              const SizedBox(height: 15.0),
               CustomTextField(
                 placeholderText: "Email",
                 controller: emailController,
@@ -56,14 +48,14 @@ class _SignupPageState extends State<SignupPage> {
                 isObscureText: true,
               ),
               const SizedBox(height: 20.0),
-              AuthGradientButton(buttonText: "Sign Up"),
+              AuthGradientButton(buttonText: "Login"),
               const SizedBox(height: 20.0),
               RichText(
                 text: TextSpan(
-                  text: "Already have an account? ",
+                  text: "Don't have an account? ",
                   children: [
                     TextSpan(
-                      text: "Sign In",
+                      text: "Sign Up",
                       style: TextStyle(
                         color: Pallete.gradient2,
                         fontWeight: FontWeight.bold,
