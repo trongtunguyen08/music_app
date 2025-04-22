@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_app/core/theme/app_pallete.dart';
-import 'package:music_app/features/auth/repositories/auth_remote_repository.dart';
+import 'package:music_app/core/utils.dart';
+import 'package:music_app/core/widgets/loader_widget.dart';
 import 'package:music_app/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:music_app/features/auth/view/widgets/custom_text_field.dart';
+import 'package:music_app/features/auth/view_model/auth_view_model.dart';
 
-class SignupPage extends StatefulWidget {
+class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  ConsumerState<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends ConsumerState<SignupPage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -27,6 +30,21 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(authViewModelProvider, (_, next) {
+      next?.when(
+        data: (data) {
+          showSnackbar(context, "Account created successfully!\nPlease login.");
+          Navigator.pop(context);
+        },
+        error: (error, stackTrace) {
+          showSnackbar(context, error.toString());
+        },
+        loading: () {
+          return const LoaderWidget();
+        },
+      );
+    });
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -60,11 +78,15 @@ class _SignupPageState extends State<SignupPage> {
               AuthGradientButton(
                 buttonText: "Sign Up",
                 onButtonPressed: () async {
-                  await AuthRemoteRepository().signup(
-                    name: nameController.text,
-                    email: emailController.text,
-                    password: passwordController.text,
-                  );
+                  if (formKey.currentState!.validate()) {
+                    await ref
+                        .read(authViewModelProvider.notifier)
+                        .signUpUser(
+                          name: nameController.text,
+                          email: emailController.text,
+                          password: passwordController.text,
+                        );
+                  }
                 },
               ),
               const SizedBox(height: 20.0),
