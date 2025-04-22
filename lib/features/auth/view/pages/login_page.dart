@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/core/theme/app_pallete.dart';
+import 'package:music_app/features/auth/repositories/auth_remote_repository.dart';
+import 'package:music_app/features/auth/view/pages/signup_page.dart';
 import 'package:music_app/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:music_app/features/auth/view/widgets/custom_text_field.dart';
 
@@ -11,8 +13,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final emailController = TextEditingController(
+    text: "trongtunguyen08@icloud.com",
+  );
+  final passwordController = TextEditingController(text: "1234@Tps");
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -48,21 +52,41 @@ class _LoginPageState extends State<LoginPage> {
                 isObscureText: true,
               ),
               const SizedBox(height: 20.0),
-              AuthGradientButton(buttonText: "Login"),
+              AuthGradientButton(
+                buttonText: "Login",
+                onButtonPressed: () async {
+                  await AuthRemoteRepository().login(
+                    email: emailController.text,
+                    password: passwordController.text,
+                  );
+                },
+              ),
               const SizedBox(height: 20.0),
-              RichText(
-                text: TextSpan(
-                  text: "Don't have an account? ",
-                  children: [
-                    TextSpan(
-                      text: "Sign Up",
-                      style: TextStyle(
-                        color: Pallete.gradient2,
-                        fontWeight: FontWeight.bold,
-                      ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return SignupPage();
+                      },
                     ),
-                  ],
-                  style: Theme.of(context).textTheme.titleMedium,
+                  );
+                },
+                child: RichText(
+                  text: TextSpan(
+                    text: "Don't have an account? ",
+                    children: [
+                      TextSpan(
+                        text: "Sign Up",
+                        style: TextStyle(
+                          color: Pallete.gradient2,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                 ),
               ),
             ],
